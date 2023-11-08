@@ -1,4 +1,5 @@
 import "./bootstrap.js";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "preline";
 /*
  * Welcome to your app's main JavaScript file!
@@ -10,8 +11,9 @@ import "preline";
 // any CSS you import will output into a single css file (app.css in this case)
 import "./app/styles/app.css";
 
-import greet from "./app/js/greet";
-
 window.addEventListener("DOMContentLoaded", () => {
-  greet();
+  console.log(ClassicEditor);
+  ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+    console.error(error);
+  });
 });

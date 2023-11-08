@@ -3,15 +3,20 @@
 {% endblock %}
 
 {% block body %}
-  <section class="px-8">
-    <ul class="lg:max-w-5xl mx-auto grid lg:grid-cols-3 lg:gap-6 gap-3 py-20">
+  <section class="">
+    <ul class="grid lg:grid-cols-2 lg:gap-6 gap-3">
       {% for post in posts %}
         {% include 'components/_blog_card.html.twig' with {
           title: post.title,
           category: post.category,
           tags: post.tags,
           summary: post.summary,
-          url: '',
+          url: path(
+            'blog_detail',
+            {
+              id: post.id
+            }
+          ),
           thumbnail: post.getThumbnailUrl
         } %}
       {% endfor %}

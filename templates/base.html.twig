@@ -18,9 +18,17 @@
   </head>
   <body>
     {% include 'layout/_header.html.twig' %}
-    {% block body %}
+    <div class="lg:max-w-5xl flex items-start justify-center gap-10 mx-auto py-20">
+      <main>
+        {% block body %}
 
-    {% endblock %}
+        {% endblock %}
+      </main>
+      <aside class="lg:min-w-[12.5rem]">
+        {% include 'layout/_popular_articles.html.twig' %}
+      </aside>
+    </div>
+
     {% include 'layout/_footer.html.twig' %}
   </body>
 </html>

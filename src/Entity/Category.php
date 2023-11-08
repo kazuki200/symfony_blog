@@ -21,6 +21,9 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Post::class)]
     private Collection $posts;
 
+    #[ORM\Column]
+    private ?bool $status = null;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -76,5 +79,17 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): static
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

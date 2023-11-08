@@ -1,0 +1,9 @@
+easy_admin:
+    entities:
+        Campaign:
+            class: App\Entity\PostChild
+            label: PostChild
+            form:
+                fields:
+                    - title
+                    - { property: 'content', type: 'fos_ckeditor'}

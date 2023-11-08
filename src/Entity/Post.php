@@ -43,11 +43,18 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $summary = null;
 
+#[ORM\OneToMany(mappedBy: 'post', targetEntity: PostChild::class, cascade: ["persist"])]
+    private Collection $postChildren;
+
+#[ORM\Column]
+private ?int $view_count = null;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->postChildren = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,5 +204,72 @@ class Post
     public function getThumbnailUrl(): ?string
     {
         return 'images/' . $this->thumbnail;
+    }
+
+    /**
+     * @return Collection<int, PostChild>
+     */
+    public function getPostChildren(): Collection
+    {
+        return $this->postChildren;
+    }
+
+    public function addPostChild(PostChild $postChild): static
+    {
+        if (!$this->postChildren->contains($postChild)) {
+            $this->postChildren->add($postChild);
+            $postChild->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostChild(PostChild $postChild): static
+    {
+        if ($this->postChildren->removeElement($postChild)) {
+            // set the owning side to null (unless already changed)
+            if ($postChild->getPost() === $this) {
+                $postChild->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->title; // 例として、タイトルを文字列として返す
+    }
+
+    public function __clone()
+{
+    if ($this->postChildren) {
+        $clonedChildren = new ArrayCollection();
+        foreach ($this->postChildren as $child) {
+            $clonedChild = clone $child;
+            $clonedChild->setPost($this); // 新しいPostへの参照をセット
+            $clonedChildren->add($clonedChild);
+        }
+        $this->postChildren = $clonedChildren;
+    }
+}
+
+    public function getViewCount(): ?int
+    {
+        return $this->view_count;
+    }
+
+    public function setViewCount(int $view_count): static
+    {
+        $this->view_count = $view_count;
+
+        return $this;
+    }
+
+     public function incrementViewCount(): self
+    {
+        $this->view_count++;
+        return $this;
     }
 }
